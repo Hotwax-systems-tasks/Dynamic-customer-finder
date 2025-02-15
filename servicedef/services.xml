@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
-
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
-    <description>CustomerFinder Services</description>
-    <vendor></vendor>
-    <version>1.0</version>
-
-    <service name="noSyntaxError" engine="interface">
+    xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+    <service name="findCustomerDetails" engine="groovy"
+        location="component://customerFinder/groovyScripts/FindCustomerDetail.groovy"
+        invoke="findCustomerDetails">
+        <description>Service to fetch customer details from the FindCustomerView entity.</description>
+        <!-- Optional input parameter -->
+        <attribute name="partyId" type="String" optional="true" mode="IN" />
+        <!-- Declare output parameters explicitly -->
+        <attribute name="customerList" type="java.util.List" mode="OUT" />
+        <attribute name="responseMessage" type="String" mode="OUT" />
+    </service>
+    <!-- Service to create a new customer if one does not already exist -->
+    <service name="createCustomer" engine="groovy"
+        location="component://customerFinder/groovyScripts/CreateCustomer.groovy"
+        invoke="createCustomer">
         <description>
-            Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
         </description>
-    </service> 
-    
+        <attribute name="emailAddress" type="String" optional="false" mode="IN" />
+        <attribute name="firstName" type="String" optional="false" mode="IN" />
+        <attribute name="lastName" type="String" optional="false" mode="IN" />
+        <!-- Optional fields for additional contact info -->
+        <attribute name="postalAddress" type="String" optional="true" mode="IN" />
+        <attribute name="contactNumber" type="String" optional="true" mode="IN" />
+        <!-- Output: a result message -->
+        <attribute name="resultMessage" type="String" mode="OUT" />
+    </service>
+
+    <!-- Service to update an existing customer's postal address and/or phone number -->
+    <service name="updateCustomer" engine="groovy"
+        location="component://customerFinder/groovyScripts/UpdateCustomer.groovy"
+        invoke="updateCustomer">
+        <description>
+            Updates an existing customer's details.  
+            Requires emailAddress to identify the customer and allows updates to postalAddress and contactNumber.
+            It first verifies that the customer exists (via findCustomer) and then applies the updates.
+        </description>
+        <attribute name="emailAddress" type="String" optional="false" mode="IN" />
+        <attribute name="postalAddress" type="String" optional="true" mode="IN" />
+        <attribute name="contactNumber" type="String" optional="true" mode="IN" />
+        <attribute name="resultMessage" type="String" mode="OUT" />
+    </service>
 </services>

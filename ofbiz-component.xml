@@ -29,12 +29,14 @@ under the License.
     <classpath type="dir" location="dtd"/>
 
     <!-- entity resources: model(s), eca(s), group, and data definitions -->
+    <entity-resource type="model" reader-name="main" loader="main" location="entitydef/viewEntity.xml"/>
     <entity-resource type="model" reader-name="main" loader="main" location="entitydef/entitymodel.xml"/>
     <!-- <entity-resource type="eca" reader-name="main" loader="main" location="entitydef/eecas.xml"/> -->
     <entity-resource type="data" reader-name="seed" loader="main" location="data/CustomerFinderTypeData.xml"/>
     <entity-resource type="data" reader-name="seed" loader="main" location="data/CustomerFinderSecurityPermissionSeedData.xml"/>
     <entity-resource type="data" reader-name="demo" loader="main" location="data/CustomerFinderSecurityGroupDemoData.xml"/>
     <entity-resource type="data" reader-name="demo" loader="main" location="data/CustomerFinderDemoData.xml"/>
+
 
     <!-- service resources: model(s), eca(s) and group definitions -->
     <service-resource type="model" loader="main" location="servicedef/services.xml"/>
